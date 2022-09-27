@@ -1,8 +1,9 @@
 #version 330 core
-// Volume rendering fragment shader 2
+// Volume rendering fragment shader
 
 uniform vec3 iResolution;
 uniform float iTime;
+uniform sampler3D textureSampler;
 
 out vec4 color;
 
@@ -51,22 +52,6 @@ vec2 csqr(vec2 a)
     return vec2(a.x*a.x - a.y*a.y, 2.*a.x*a.y);
 }
 
-float ABCvolume(vec3 texCoord)
-{
-    vec3 center1 = vec3(0.25);
-    vec3 center2 = vec3(0.75);
-
-    float dist1 = length(texCoord - center1);
-    float dist2 = length(texCoord - center2);
-    float phase1 = 0.5 * 3.14;
-    float phase2 = 0.3 * 3.14;
-
-    float intensity1 = 0.35 * (sin(14.0 * dist1 - 5.0 * iTime * 1.0 + phase1) + 1.0);
-    float intensity2 = 0.25 * (sin(16.0 * dist2 - 5.0 * iTime * 1.0 + phase2) + 1.0);
-
-    return intensity1 + intensity2;
-}
-
 /**
  * Samples the volume texture at a given position.
  *
@@ -75,7 +60,7 @@ float ABCvolume(vec3 texCoord)
  */
 float sampleVolume(vec3 texCoord)
 {
-    return ABCvolume(texCoord);
+    return texture(textureSampler, texCoord).r;
 }
 
 /**
@@ -161,7 +146,7 @@ void accumulation(float value, float sampleRatio, inout vec4 composedColor)
     color.a = opacityCorrection(color.a, sampleRatio);
 
     // TODO: Implement Front-to-back blending
-    composedColor = vec4(0.5);
+    composedColor = vec4(0.5) * value; // placeholder
 }
 
 /**
