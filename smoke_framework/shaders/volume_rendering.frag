@@ -40,8 +40,8 @@ const float sig = 0.4;
 
 // Colors for the colormap
 const vec3 colorNode0 = vec3(0, 0, 1);  // blue
-//const vec3 colorNode1 = vec3(1.0F, 1.0F, 1.0F);  // white
-const vec3 colorNode1 = vec3(0.0F, 1.0F, 0.0F);  // green
+//const vec3 colorNode1 = vec3(1, 1, 1);  // white
+const vec3 colorNode1 = vec3(0, 1, 0);  // green
 const vec3 colorNode2 = vec3(1, 0, 0);  // red
 
 // Choose technique
@@ -72,26 +72,26 @@ float sampleVolume(vec3 texCoord)
  */
 vec4 transferFunction(float value)
 {
-    float alpha = value * 0.5F; // value;
-    if (value < 0.2F)
-        alpha = 0.5F; // 0.0F;
+    float alpha = value * 0.5; // value;
+    if (value < 0.2)
+        alpha = 0.5; // 0.0F;
 
-    float t = 0.0F;
+    float t = 0.0;
     vec3 color0 = colorNode0;
     vec3 color1 = colorNode1;
-    if (value < 0.5F)
+    if (value < 0.5)
     {
-        t = 2.0F * value;
+        t = 2.0 * value;
     }
     else
     {
-        t = 2.0F * (value - 0.5F);
+        t = 2.0 * (value - 0.5);
         color0 = colorNode1;
         color1 = colorNode2;
     }
     vec4 color;
     color.a = alpha;
-    color.rgb = color0 * (1.0F - t) + color1 * t;
+    color.rgb = color0 * (1.0 - t) + color1 * t;
     return color;
 }
 
@@ -215,7 +215,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     /******************* test against bounding box ********************/
     float tNear, tFar;
     bool hit = intersectBoundingBox(camPos, rayDir, tNear, tFar);
-    vec4 background = vec4(0.1, 0.2, 0.4, 1.0);
+    // vec4 background = vec4(0.1, 0.2, 0.4, 1.0);
+    vec4 background = vec4(0.0, 0.0, 0.0, 1.0);
     if (!hit)
     {
        fragColor = background;
