@@ -40,7 +40,8 @@ const float sig = 0.4;
 
 // Colors for the colormap
 const vec3 colorNode0 = vec3(0, 0, 1);  // blue
-const vec3 colorNode1 = vec3(1, 1, 1);  // white
+//const vec3 colorNode1 = vec3(1.0F, 1.0F, 1.0F);  // white
+const vec3 colorNode1 = vec3(0.0F, 1.0F, 0.0F);  // green
 const vec3 colorNode2 = vec3(1, 0, 0);  // red
 
 // Choose technique
@@ -71,26 +72,26 @@ float sampleVolume(vec3 texCoord)
  */
 vec4 transferFunction(float value)
 {
-    float alpha = value * 0.1;// value;
-    if (value < 0.2)
-        alpha = 0.0;
+    float alpha = value * 0.5F; // value;
+    if (value < 0.2F)
+        alpha = 0.5F; // 0.0F;
 
-    float t = 0.0;
+    float t = 0.0F;
     vec3 color0 = colorNode0;
     vec3 color1 = colorNode1;
-    if (value < 0.5)
+    if (value < 0.5F)
     {
-        t = 2.0 * value;
+        t = 2.0F * value;
     }
     else
     {
-        t = 2.0 * (value - 0.5);
+        t = 2.0F * (value - 0.5F);
         color0 = colorNode1;
         color1 = colorNode2;
     }
     vec4 color;
     color.a = alpha;
-    color.rgb = color0 * (1.0 - t) + color1 * t;
+    color.rgb = color0 * (1.0F - t) + color1 * t;
     return color;
 }
 
